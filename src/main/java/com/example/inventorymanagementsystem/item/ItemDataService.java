@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ItemService {
+public class ItemDataService {
 
     private final ItemRepository itemRepository;
 
-    public ItemService(@Autowired ItemRepository itemRepository) {
+    public ItemDataService(@Autowired ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
     }
 
@@ -19,11 +19,11 @@ public class ItemService {
      * @param item: Item to save to database
      * @return returns the saved item
      */
-    public Item saveItem(Item item) {
+    public Item createOrUpdateItem(Item item) {
         return this.itemRepository.save(item);
     }
 
-    public List<Item> saveItems(List<Item> item) {
+    public List<Item> createOrUpdateItems(List<Item> item) {
         return this.itemRepository.saveAll(item);
     }
 
@@ -35,8 +35,9 @@ public class ItemService {
         return this.itemRepository.findAll();
     }
 
-    public Item getItem(long id) {
-        return this.itemRepository.getById(id);
+    public Item getItem(long id) throws Exception {
+        return this.itemRepository.findById(id)
+                .orElseThrow(() -> new Exception("No Item found by id: " + id));
     }
 
     public void deleteItem(Item item) {
@@ -50,6 +51,8 @@ public class ItemService {
     public void deleteItem(long id) {
         this.itemRepository.deleteById(id);
     }
+
+
 
 
 }

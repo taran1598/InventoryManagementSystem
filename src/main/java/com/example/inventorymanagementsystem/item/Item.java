@@ -1,12 +1,13 @@
 package com.example.inventorymanagementsystem.item;
 
 
+import com.example.inventorymanagementsystem.warehouse.Warehouse;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -21,15 +22,23 @@ import java.util.Objects;
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @Column(name = "item_id", nullable = false)
     private Long id;
 
-    @Column(name = "displayName")
+    @Column(name = "display_name", nullable = false)
     private String displayName;
 
+    @Column(name = "quantity")
+    private int quantity;
+
     @CreationTimestamp
-    @Column(name = "createdItemStamp", nullable = false)
+    @Column(name = "created_itemStamp", nullable = false)
     private Instant createTimeStamp;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "warehouse_fk", referencedColumnName = "warehouse_id", nullable = true)
+    private Warehouse warehouse;
 
 
     @Override

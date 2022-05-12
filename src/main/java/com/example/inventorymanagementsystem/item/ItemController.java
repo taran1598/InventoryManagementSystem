@@ -9,9 +9,9 @@ import java.util.List;
 @RestController
 public class ItemController {
 
-    private final ItemService itemService;
+    private final ItemDataService itemService;
 
-    public ItemController(@Autowired ItemService itemService) {
+    public ItemController(@Autowired ItemDataService itemService) {
         this.itemService = itemService;
     }
 
@@ -21,18 +21,18 @@ public class ItemController {
     }
 
     @GetMapping("/items/{id}")
-    public Item getItem(@PathVariable long id) {
+    public Item getItem(@PathVariable long id) throws Exception {
         return this.itemService.getItem(id);
     }
 
     @PostMapping("/item")
     public Item saveItem(@RequestBody Item item) {
-        return this.itemService.saveItem(item);
+        return this.itemService.createOrUpdateItem(item);
     }
 
     @PostMapping("/items")
     public List<Item> saveAllItems(@RequestBody List<Item> items) {
-        return this.itemService.saveItems(items);
+        return this.itemService.createOrUpdateItems(items);
     }
 
     @DeleteMapping("/items")
