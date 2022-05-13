@@ -33,7 +33,7 @@ public class Item {
 
     @CreationTimestamp
     @Column(name = "created_itemStamp", nullable = false)
-    private Instant createTimeStamp;
+    private Instant createdTimeStamp;
 
     @JsonIgnore
     @ManyToOne
