@@ -1,6 +1,7 @@
 package com.example.inventorymanagementsystem.item;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,13 @@ public class ItemController {
     @GetMapping("/items")
     public List<Item> getItems() {
         return this.itemService.getItems();
+    }
+
+    @GetMapping
+    public String getPeople(Model model) {
+        model.addAttribute("something", "this is working?");
+
+        return "people";
     }
 
     @GetMapping("/items/{id}")
