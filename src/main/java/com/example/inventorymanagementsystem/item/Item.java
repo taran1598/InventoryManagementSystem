@@ -22,17 +22,17 @@ import java.util.Objects;
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "item_id", nullable = false)
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "display_name", nullable = false)
+    @Column(name = "displayName", nullable = false)
     private String displayName;
 
     @Column(name = "quantity")
     private int quantity;
 
     @CreationTimestamp
-    @Column(name = "created_itemStamp", nullable = false)
+    @Column(name = "createdTimeStamp", nullable = false)
     private Instant createdTimeStamp;
 
     @JsonIgnore
