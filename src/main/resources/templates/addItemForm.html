@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmins:th="https://www.thymleaf.org" xmlns:xmins="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Item</title>
+</head>
+<body>
+    <div class="add-item-form-container">
+        <form action="#" th:action="@{/item}" th:object="${item}" method="post">
+            <div class="label-group">
+                <input type="text" th:field="*{displayName}" placeholder="Enter item display name" required>
+                <input type="number" th:field="*{quantity}" required placeholder="Enter quantity of item">
+            </div>
+            <div>
+                <button type="submit" class="submit-btn">Save</button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

@@ -1,13 +1,14 @@
 package com.example.inventorymanagementsystem.item;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @CrossOrigin
-@RestController
+@Controller
 public class ItemController {
 
     private final ItemDataService itemService;
@@ -17,15 +18,9 @@ public class ItemController {
     }
 
     @GetMapping("/items")
-    public List<Item> getItems() {
-        return this.itemService.getItems();
-    }
-
-    @GetMapping
-    public String getPeople(Model model) {
-        model.addAttribute("something", "this is working?");
-
-        return "people";
+    public String getItems(Model model) {
+        model.addAttribute("items", this.itemService.getItems());
+        return "item.html";
     }
 
     @GetMapping("/items/{id}")
@@ -34,8 +29,10 @@ public class ItemController {
     }
 
     @PostMapping("/item")
-    public Item saveItem(@RequestBody Item item) {
-        return this.itemService.createOrUpdateItem(item);
+    public String saveItem(Item item) {
+        this.itemService.createOrUpdateItem(item);
+
+        return "redirect:/items";
     }
 
     @PostMapping("/items")
@@ -51,6 +48,13 @@ public class ItemController {
     @DeleteMapping("/items/{id}")
     public void deleteItem(@PathVariable long id) {
         this.itemService.deleteItem(id);
+    }
+
+    @GetMapping("/addItemsPage")
+    public String goToItemsPage(Model model) {
+        Item newItem = new Item();
+        model.addAttribute("item", newItem);
+        return "addItemForm";
     }
 
 }

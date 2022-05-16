@@ -1,29 +1,42 @@
-<!--<h2>Items</h2>-->
-<!--&lt;!&ndash;<div class="add-item">&ndash;&gt;-->
-<!--&lt;!&ndash;  <button class="add-item-btn" name="addItem" type="button" (click)="addItem"&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--<div class="items-container">-->
-<!--    <table class="items-table">-->
-<!--        <thead>-->
-<!--        <tr>-->
-<!--            <th>id</th>-->
-<!--            <th>Name</th>-->
-<!--            <th>Quantity</th>-->
-<!--            <th>Created On</th>-->
-<!--        </tr>-->
-<!--        </thead>-->
-<!--        <tbody>-->
-<!--        <tr *ngFor="let item of items">-->
-<!--            <td>{{item.id}}</td>-->
-<!--            <td>{{item.displayName}}</td>-->
-<!--            <td>{{item.quantity}}</td>-->
-<!--            <td>{{item.createdTimeStamp}}</td>-->
-<!--            <td>-->
-<!--                <button class="delete-item-btn" name="deleteItem" type="button" (click)="deleteItem(item)">-->
-<!--                    Delete Item-->
-<!--                </button>-->
-<!--            </td>-->
-<!--        </tr>-->
-<!--        </tbody>-->
-<!--    </table>-->
-<!--</div>-->
+
+<!DOCTYPE html>
+<html xmins:th="https://www.thymleaf.org" xmlns:xmins="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h2>Items</h2>
+
+    <div class="add-item">
+        <a th:href="@{/addItemsPage}"> Add Item</a>
+    </div>
+        <div class="items-container" style="text-align:center" >
+            <table class="items-table" th:action="@{/items}">
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Created On</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${items}">
+                    <td th:text="${item.id}"></td>
+                    <td th:text="${item.displayName}"></td>
+                    <td th:text="${item.quantity}"></td>
+                    <td th:text="${item.createdTimeStamp}"></td>
+                    <!--            <td>-->
+                    <!--                <button class="delete-item-btn" name="deleteItem" type="button" (click)="deleteItem(item)">-->
+                    <!--                    Delete Item-->
+                    <!--                </button>-->
+                    <!--            </td>-->
+                </tr>
+                </tbody>
+            </table>
+        </div>
+</body>
+</html>
+
+
