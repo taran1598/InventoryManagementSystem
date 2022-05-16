@@ -46,14 +46,27 @@ public class ItemController {
     }
 
     @DeleteMapping("/items/{id}")
-    public void deleteItem(@PathVariable long id) {
+    public String deleteItem(@PathVariable long id) {
         this.itemService.deleteItem(id);
+        return "redirect:/items";
     }
 
+
+    //                                   //
+    // ITEM PAGE REDIRECTION ENDPOINTS   //
+    //                                   //
+
     @GetMapping("/addItemsPage")
-    public String goToItemsPage(Model model) {
+    public String goToAddItemsPage(Model model) {
         Item newItem = new Item();
         model.addAttribute("item", newItem);
+        return "addItemForm";
+    }
+
+    @GetMapping("/editItemsPage/{id}")
+    public String goToEditItemsPage(@PathVariable long id, Model model) throws Exception {
+        Item item = this.itemService.getItem(id);
+        model.addAttribute("item", item);
         return "addItemForm";
     }
 

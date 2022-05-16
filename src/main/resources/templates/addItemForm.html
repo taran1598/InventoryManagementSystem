@@ -8,11 +8,13 @@
     <div class="add-item-form-container">
         <form action="#" th:action="@{/item}" th:object="${item}" method="post">
             <div class="label-group">
+                <input type="hidden" th:field="*{id}">
+                <input type="hidden" th:field="*{createdTimeStamp}">
                 <input type="text" th:field="*{displayName}" placeholder="Enter item display name" required>
                 <input type="number" th:field="*{quantity}" required placeholder="Enter quantity of item">
             </div>
             <div>
-                <button type="submit" class="submit-btn">Save</button>
+                <button type="submit" class="btn">Save</button>
             </div>
         </form>
     </div>

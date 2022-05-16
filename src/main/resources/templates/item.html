@@ -19,6 +19,8 @@
                     <th>Name</th>
                     <th>Quantity</th>
                     <th>Created On</th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -27,11 +29,16 @@
                     <td th:text="${item.displayName}"></td>
                     <td th:text="${item.quantity}"></td>
                     <td th:text="${item.createdTimeStamp}"></td>
-                    <!--            <td>-->
-                    <!--                <button class="delete-item-btn" name="deleteItem" type="button" (click)="deleteItem(item)">-->
-                    <!--                    Delete Item-->
-                    <!--                </button>-->
-                    <!--            </td>-->
+                    <td>
+                        <a th:href="@{/editItemsPage/{id}(id=${item.id})}">Edit</a>
+                    </td>
+                    <td>
+                        <form action="#" th:action="@{'/items/{id}'(id=${item.id})}" th:method="delete">
+                            <input type="hidden" name="_method" value="delete" />
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+
                 </tr>
                 </tbody>
             </table>
