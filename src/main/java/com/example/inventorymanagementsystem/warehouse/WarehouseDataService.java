@@ -51,15 +51,15 @@ public class WarehouseDataService {
         this.warehouseRepository.deleteAll();
     }
 
-    @Transactional
-    public Warehouse addItemToWarehouse(long itemId, long warehouseId) throws Exception {
-        Item item = this.itemDataService.getItem(itemId);
-        Warehouse warehouseToAddItemTo = this.getWarehouse(warehouseId);
-        warehouseToAddItemTo.addItem(item);
-        item.setWarehouse(warehouseToAddItemTo);
-        this.itemDataService.createOrUpdateItem(item);
-        return this.warehouseRepository.save(warehouseToAddItemTo);
-    }
+//    @Transactional
+//    public Warehouse addItemToWarehouse(long itemId, long warehouseId) throws Exception {
+//        Item item = this.itemDataService.getItem(itemId);
+//        Warehouse warehouseToAddItemTo = this.getWarehouse(warehouseId);
+//        warehouseToAddItemTo.addItem(item);
+//        item.setWarehouse(warehouseToAddItemTo);
+//        this.itemDataService.createOrUpdateItem(item);
+//        return this.warehouseRepository.save(warehouseToAddItemTo);
+//    }
 
 
 

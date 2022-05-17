@@ -7,9 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
 @Getter
@@ -28,13 +26,25 @@ public class Warehouse {
     @Column(name = "warehouse_name")
     private String warehouseName;
 
+    @Column(name = "maxCapacity")
+    private int maxCapacity;
+
+    @Column(name = "currentCapacity")
+    private int currentCapacity;
+
     @Column(name = "address", nullable = false)
     private String address;
 
-    @OneToMany(fetch = FetchType.LAZY ,mappedBy = "warehouse", targetEntity = Item.class, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY ,mappedBy = "warehouse", targetEntity = Item.class, cascade = CascadeType.ALL)
     @Column(name = "items", nullable = true)
     @ToString.Exclude
-    private List<Item> items = new ArrayList<>();
+    private Set<Item> items = new HashSet<>();
+
+    public Warehouse(String warehouseName, int maxCapacity, String address) {
+        this.warehouseName = warehouseName;
+        this.maxCapacity = maxCapacity;
+        this.address = address;
+    }
 
     public void addItem(Item item) {
         this.getItems().add(item);

@@ -17,8 +17,9 @@
                 <tr>
                     <th>id</th>
                     <th>Name</th>
-                    <th>Quantity</th>
+                    <th>Total Quantity</th>
                     <th>Created On</th>
+                    <th></th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -27,7 +28,7 @@
                 <tr th:each="item : ${items}">
                     <td th:text="${item.id}"></td>
                     <td th:text="${item.displayName}"></td>
-                    <td th:text="${item.quantity}"></td>
+                    <td th:text="${item.totalQuantity}"></td>
                     <td th:text="${item.createdTimeStamp}"></td>
                     <td>
                         <a th:href="@{/editItemsPage/{id}(id=${item.id})}">Edit</a>
@@ -37,6 +38,9 @@
                             <input type="hidden" name="_method" value="delete" />
                             <button type="submit">Delete</button>
                         </form>
+                    </td>
+                    <td>
+                        <a th:href="@{/addItemToWarehousePage/{id}(id=${item.id})}">Add item to Warehouse</a>
                     </td>
 
                 </tr>

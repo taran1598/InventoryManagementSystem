@@ -10,7 +10,9 @@
         <div class="label-group">
             <input type="hidden" th:field="*{warehouseId}">
             <input type="text" th:field="*{warehouseName}" placeholder="Enter warehouse display name" required>
-            <input type="text" th:field="*{address}" required placeholder="Enter address of warehouse">
+            <input type="text" th:field="*{address}" placeholder="Enter address of warehouse" required>
+            <input type="number" th:field="*{maxCapacity}" placeholder="Enter capacity of warehouse" required>
+            <input type="number" th:field="*{currentCapacity}" placeholder="Enter capacity of warehouse" readonly="readonly" required>
         </div>
         <div>
             <button type="submit" class="btn">Save</button>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmins:th="https://www.thymleaf.org" xmlns:xmins="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Item</title>
+</head>
+<body>
+<div class="add-item-form-container">
+    <form action="#" th:action="@{'/items/{itemId}/warehouse/{warehouseId}'(itemId=${itemId}, warehouseId=${warehouseId})}"  th:method="post">
+        <input type="number" th:name="quantity" placeholder="Enter quantity of item to add" required>
+        <button type="submit">Add item to this warehouse</button>
+    </form>
+</div>
+
+</body>
+</html>
+
+
+<!--th:action="@{'/items/{itemId}/warehouse/{warehouseId}'(itemId=${item.id}, warehouseId=${warehouse.warehouseId})}"-->

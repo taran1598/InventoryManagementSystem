@@ -59,10 +59,10 @@ public class WarehouseController {
         this.warehouseDataService.deleteAllWarehouses();
     }
 
-    @PostMapping("/warehouses/addItem/{itemId}/warehouse/{warehouseId}")
-    public Warehouse addItemToWarehouse(@PathVariable long itemId, @PathVariable long warehouseId) throws Exception {
-        return this.warehouseDataService.addItemToWarehouse(itemId, warehouseId);
-    }
+//    @PostMapping("/warehouses/addItem/{itemId}/warehouse/{warehouseId}")
+//    public Warehouse addItemToWarehouse(@PathVariable long itemId, @PathVariable long warehouseId) throws Exception {
+//        return this.warehouseDataService.addItemToWarehouse(itemId, warehouseId);
+//    }
 
     // redirect endpoints
 

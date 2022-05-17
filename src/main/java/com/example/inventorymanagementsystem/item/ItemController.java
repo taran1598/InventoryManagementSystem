@@ -1,5 +1,6 @@
 package com.example.inventorymanagementsystem.item;
 
+import com.example.inventorymanagementsystem.warehouse.WarehouseDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,9 +13,12 @@ import java.util.List;
 public class ItemController {
 
     private final ItemDataService itemService;
+    private final WarehouseDataService warehouseDataService;
 
-    public ItemController(@Autowired ItemDataService itemService) {
+    public ItemController(@Autowired ItemDataService itemService,
+                          @Autowired WarehouseDataService warehouseDataService) {
         this.itemService = itemService;
+        this.warehouseDataService = warehouseDataService;
     }
 
     @GetMapping("/items")
@@ -31,7 +35,6 @@ public class ItemController {
     @PostMapping("/item")
     public String saveItem(Item item) {
         this.itemService.createOrUpdateItem(item);
-
         return "redirect:/items";
     }
 
@@ -69,5 +72,21 @@ public class ItemController {
         model.addAttribute("item", item);
         return "addItemForm";
     }
+
+    @GetMapping("/addItemToWarehousePage/{id}")
+    public String goToAddItemTOwarehousePage(@PathVariable long id, Model model) throws Exception {
+        Item item = this.itemService.getItem(id);
+        model.addAttribute("item", item);
+        model.addAttribute("warehouses", warehouseDataService.getAllWarehouses());
+        return "addItemToWarehouse";
+    }
+
+    @GetMapping("/goToWarehouseQuantityForm/{itemId}/{warehouseId}")
+    public String goToAddItemTOwarehousePage(@PathVariable long itemId, @PathVariable long warehouseId, Model model) throws Exception {
+        model.addAttribute("itemId", itemId);
+        model.addAttribute("warehouseId", warehouseId);
+        return "warehouseItemQuantityForm";
+    }
+
 
 }

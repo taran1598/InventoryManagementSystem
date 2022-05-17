@@ -11,7 +11,9 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -28,18 +30,39 @@ public class Item {
     @Column(name = "displayName", nullable = false)
     private String displayName;
 
-    @Column(name = "quantity")
-    private int quantity;
+    @Column(name = "totalQuantity")
+    private int totalQuantity;
+
+    @Column(name = "quantityNotInWarehouse")
+    private int quantityNotInWarehouse;
+
 
     @CreationTimestamp
     @Column(name = "createdTimeStamp", nullable = false)
     private Instant createdTimeStamp;
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToMany
     @JoinColumn(name = "warehouse_fk", referencedColumnName = "warehouse_id", nullable = true)
-    private Warehouse warehouse;
+    @ToString.Exclude
+    private Set<Warehouse> warehouse = new HashSet<>();
 
+
+
+    public Item(String displayName, int totalQuantity) {
+        this.displayName = displayName;
+        this.totalQuantity = totalQuantity;
+        this.quantityNotInWarehouse = totalQuantity;
+    }
+
+    public void addWarehouse(Warehouse warehouse) {
+        this.getWarehouse().add(warehouse);
+    }
+
+    @PrePersist
+    private void setquantityNotInWarehouse() {
+        this.quantityNotInWarehouse = totalQuantity;
+    }
 
     @Override
     public boolean equals(Object o) {

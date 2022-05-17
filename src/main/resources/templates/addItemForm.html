@@ -11,7 +11,8 @@
                 <input type="hidden" th:field="*{id}">
                 <input type="hidden" th:field="*{createdTimeStamp}">
                 <input type="text" th:field="*{displayName}" placeholder="Enter item display name" required>
-                <input type="number" th:field="*{quantity}" required placeholder="Enter quantity of item">
+                <input type="number" th:field="*{totalQuantity}" required placeholder="Enter quantity of item">
+                <input type="hidden" th:field="*{quantityNotInWarehouse}" required placeholder="Enter quantity of item">
             </div>
             <div>
                 <button type="submit" class="btn">Save</button>

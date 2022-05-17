@@ -16,20 +16,21 @@
         <tr>
             <th>Id</th>
             <th>Warehouse Name</th>
+            <th>Max Capacity</th>
+            <th>Current Capacity</th>
             <th>Address</th>
-            <th>Items</th>
             <th></th>
             <th></th>
+
         </tr>
         </thead>
         <tbody>
         <tr th:each="warehouse : ${warehouses}">
             <td th:text="${warehouse.warehouseId}"></td>
             <td th:text="${warehouse.warehouseName}"></td>
+            <td th:text="${warehouse.maxCapacity}"></td>
+            <td th:text="${warehouse.currentCapacity}"></td>
             <td th:text="${warehouse.address}"></td>
-            <td>
-                <a th:href=""
-            </td>
             <td>
                 <a th:href="@{/editWarehousePage/{id}(id=${warehouse.warehouseId})}">Edit</a>
             </td>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmins:th="https://www.thymleaf.org" xmlns:xmins="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Add item to Warehouse</title>
+</head>
+<body>
+<h2>Warehouses</h2>
+
+<div class="add-item">
+    <a th:href="@{/addWarehousePage}">Add Warehouses</a>
+</div>
+<div class="warehouses-container" style="text-align:center" >
+    <table class="warehouses-table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Warehouse Name</th>
+            <th>Max Capacity</th>
+            <th>Current Capacity</th>
+            <th>Address</th>
+            <th></th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="warehouse : ${warehouses}">
+            <td th:text="${warehouse.warehouseId}"></td>
+            <td th:text="${warehouse.warehouseName}"></td>
+            <td th:text="${warehouse.maxCapacity}"></td>
+            <td th:text="${warehouse.currentCapacity}"></td>
+            <td th:text="${warehouse.address}"></td>
+            <td>
+                <a th:href="@{/goToWarehouseQuantityForm/{itemId}/{warehouseId}(itemId=${item.id}, warehouseId=${warehouse.warehouseId})}">Add item to this warehouse</a>
+                <!--                <form action="#" th:action="@{'/items/{itemId}/warehouse/{warehouseId}'(itemId=${item.id}, warehouseId=${warehouse.warehouseId})}" th:method="post">-->
+                <!--                    <input type="hidden" name="_method" value="delete" />-->
+                <!--                    <button type="submit">Add item to this warehouse</button>-->
+                <!--                </form>-->
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+
+
+
+
+
+<!--<td>-->
+<!--    <a th:href="@{/goToWarehouseQuantityForm/{itemId}/{warehouseId}(itemId=${item.id}, warehouseId=${warehouse.warehouseId})}">Add item to this warehouse</a>-->
+<!--    &lt;!&ndash;                <form action="#" th:action="@{'/items/{itemId}/warehouse/{warehouseId}'(itemId=${item.id}, warehouseId=${warehouse.warehouseId})}" th:method="post">&ndash;&gt;-->
+<!--    &lt;!&ndash;                    <input type="hidden" name="_method" value="delete" />&ndash;&gt;-->
+<!--    &lt;!&ndash;                    <button type="submit">Add item to this warehouse</button>&ndash;&gt;-->
+<!--    &lt;!&ndash;                </form>&ndash;&gt;-->
+<!--</td>-->
