@@ -3,12 +3,13 @@ package com.example.inventorymanagementsystem.warehouse;
 import com.example.inventorymanagementsystem.item.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @CrossOrigin
-@RestController
+@Controller
 public class WarehouseController {
 
     private final WarehouseDataService warehouseDataService;
@@ -19,8 +20,9 @@ public class WarehouseController {
 
 
     @GetMapping("/warehouses")
-    public List<Warehouse> getAllWarehouses() {
-        return warehouseDataService.getAllWarehouses();
+    public String getAllWarehouses(Model model) {
+        model.addAttribute("warehouses",warehouseDataService.getAllWarehouses());
+        return "warehouse.html";
     }
 
     @GetMapping("/warehouses/{id}")
@@ -29,9 +31,17 @@ public class WarehouseController {
     }
 
     @PostMapping("/warehouse")
-    public Warehouse createOrUpdateWarehouse(@RequestBody Warehouse warehouse) {
-        return this.warehouseDataService.createOrUpdateWarehouse(warehouse);
+    public String createOrUpdateWarehouse(Warehouse warehouse) {
+        this.warehouseDataService.createOrUpdateWarehouse(warehouse);
+        return "redirect:/warehouses";
     }
+
+//    @PostMapping("/item")
+//    public String saveItem(Item item) {
+//        this.itemService.createOrUpdateItem(item);
+//
+//        return "redirect:/items";
+//    }
 
     @PostMapping("/warehouses")
     public List<Warehouse> createOrUpdateWarehouse(@RequestBody List<Warehouse> warehouses) {
@@ -39,8 +49,9 @@ public class WarehouseController {
     }
 
     @DeleteMapping("/warehouses/{id}")
-    public void deleteWarehouse(@PathVariable long id) {
+    public String deleteWarehouse(@PathVariable long id) {
         this.warehouseDataService.deleteWarehouse(id);
+        return "redirect:/warehouses";
     }
 
     @DeleteMapping("/warehouses")
@@ -52,6 +63,27 @@ public class WarehouseController {
     public Warehouse addItemToWarehouse(@PathVariable long itemId, @PathVariable long warehouseId) throws Exception {
         return this.warehouseDataService.addItemToWarehouse(itemId, warehouseId);
     }
+
+    // redirect endpoints
+
+    @GetMapping("/addWarehousePage")
+    public String goToAddWarehousesPage(Model model) {
+        Warehouse newWarehouse = new Warehouse();
+        model.addAttribute("warehouse", newWarehouse);
+        return "addWarehouseForm";
+    }
+
+    @GetMapping("/editWarehousePage/{id}")
+    public String goToEditItemsPage(@PathVariable long id, Model model) throws Exception {
+        Warehouse warehouse = this.warehouseDataService.getWarehouse(id);
+        model.addAttribute("warehouse", warehouse);
+        return "addWarehouseForm";
+    }
+
+//    @GetMapping("/showWarehouseItemsPage/{id}")
+//    public String goToShowWarehouseItemsPage(@PathVariable long id, Model model) throws Exception {
+//        Warehouse warehouse = this.warehouseDataService.getWarehouse(id);
+//    }
 
 
 }

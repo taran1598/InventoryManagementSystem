@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmins:th="https://www.thymleaf.org" xmlns:xmins="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Warehouses</title>
+</head>
+<body>
+<h2>Warehouses</h2>
+
+<div class="add-item">
+    <a th:href="@{/addWarehousePage}">Add Warehouses</a>
+</div>
+<div class="warehouses-container" style="text-align:center" >
+    <table class="warehouses-table" th:action="@{/warehouses}">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Warehouse Name</th>
+            <th>Address</th>
+            <th>Items</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="warehouse : ${warehouses}">
+            <td th:text="${warehouse.warehouseId}"></td>
+            <td th:text="${warehouse.warehouseName}"></td>
+            <td th:text="${warehouse.address}"></td>
+            <td>
+                <a th:href=""
+            </td>
+            <td>
+                <a th:href="@{/editWarehousePage/{id}(id=${warehouse.warehouseId})}">Edit</a>
+            </td>
+            <td>
+                <form action="#" th:action="@{'/warehouses/{id}'(id=${warehouse.warehouseId})}" th:method="delete">
+                    <input type="hidden" name="_method" value="delete" />
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+
+

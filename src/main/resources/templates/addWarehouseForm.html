@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmins:th="https://www.thymleaf.org" xmlns:xmins="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Warehouse</title>
+</head>
+<body>
+<div class="add-item-form-container">
+    <form action="#" th:action="@{/warehouse}" th:object="${warehouse}" method="post">
+        <div class="label-group">
+            <input type="hidden" th:field="*{warehouseId}">
+            <input type="text" th:field="*{warehouseName}" placeholder="Enter warehouse display name" required>
+            <input type="text" th:field="*{address}" required placeholder="Enter address of warehouse">
+        </div>
+        <div>
+            <button type="submit" class="btn">Save</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
