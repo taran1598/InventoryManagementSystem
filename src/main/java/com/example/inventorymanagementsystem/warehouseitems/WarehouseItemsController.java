@@ -1,6 +1,7 @@
 package com.example.inventorymanagementsystem.warehouseitems;
 
 import com.example.inventorymanagementsystem.item.Item;
+import com.example.inventorymanagementsystem.thymeleafAttributes.ThymeleafAttributes;
 import com.example.inventorymanagementsystem.warehouse.Warehouse;
 import com.example.inventorymanagementsystem.warehouse.WarehouseDataService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,32 +31,48 @@ public class WarehouseItemsController {
 
 
     @PostMapping("/items/{itemId}/warehouse/{warehouseId}")
-    public String saveItemToWarehouse(int quantity, @PathVariable long itemId, @PathVariable long warehouseId) throws Exception {
-        this.warehouseItemsDataService.saveTimeToWarehouse(itemId, warehouseId, quantity);
-        return "redirect:/items";
+    public String saveItemToWarehouse(int quantity, @PathVariable long itemId, @PathVariable long warehouseId, Model model) {
+        try {
+            this.warehouseItemsDataService.saveTimeToWarehouse(itemId, warehouseId, quantity);
+            return "redirect:/items";
+        } catch (Exception e) {
+            model.addAttribute(ThymeleafAttributes.error.toString(), e.getMessage());
+            return "errorPage";
+        }
     }
 
     @PostMapping("/reduceItem/{itemId}/warehouse/{warehouseId}")
-    public String reduceItemInWarehouse(int quantityToReduce, @PathVariable long itemId, @PathVariable long warehouseId) throws Exception {
-        this.warehouseItemsDataService.reduceItemFromWarehouse(itemId, warehouseId, quantityToReduce);
-        return "redirect:/warehouses";
+    public String reduceItemInWarehouse(int quantityToReduce, @PathVariable long itemId, @PathVariable long warehouseId, Model model) {
+        try {
+            this.warehouseItemsDataService.reduceItemFromWarehouse(itemId, warehouseId, quantityToReduce);
+            return "redirect:/warehouses";
+        } catch (Exception e) {
+            model.addAttribute(ThymeleafAttributes.error.toString(), e.getMessage());
+            return "errorPage";
+        }
     }
 
     @GetMapping("/itemsInWarehousePage/{id}")
-    public String goToItemsInWarehousePage(@PathVariable long id, Model model) throws Exception {
-        Warehouse warehouse = this.warehouseDataService.getWarehouse(id);
-        List<WarehouseItems> warehouseItemsList= this.warehouseItemsDataService.findItemsInWarehouse(id);
+    public String goToItemsInWarehousePage(@PathVariable long id, Model model) {
 
-        List<Item> items = this.warehouseItemsDataService.getItemsInWarehouse(warehouseItemsList);
+        try {
+            Warehouse warehouse = this.warehouseDataService.getWarehouse(id);
+            List<WarehouseItems> warehouseItemsList = this.warehouseItemsDataService.findItemsInWarehouse(id);
 
-        // turn warehouseItemsList to map for quick retrieval in front-end
-        Map<Long, Integer> itemIdToWarehouseQuantityMap =
-                warehouseItemsList.stream().collect(Collectors.toMap(WarehouseItems::getItemId, WarehouseItems::getQuantity));
+            List<Item> items = this.warehouseItemsDataService.getItemsInWarehouse(warehouseItemsList);
 
-        model.addAttribute("warehouse", warehouse);
-        model.addAttribute("items", items);
-        model.addAttribute("warehouseItemsMap", itemIdToWarehouseQuantityMap);
-        return "itemsInWarehouse";
+            // turn warehouseItemsList to map for quick retrieval in front-end
+            Map<Long, Integer> itemIdToWarehouseQuantityMap =
+                    warehouseItemsList.stream().collect(Collectors.toMap(WarehouseItems::getItemId, WarehouseItems::getQuantity));
+
+            model.addAttribute("warehouse", warehouse);
+            model.addAttribute("items", items);
+            model.addAttribute("warehouseItemsMap", itemIdToWarehouseQuantityMap);
+            return "itemsInWarehouse";
+        } catch (Exception e) {
+            model.addAttribute(ThymeleafAttributes.error.toString(), e.getMessage());
+            return "errorPage";
+        }
     }
 
     //                      //

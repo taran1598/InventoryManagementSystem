@@ -2,9 +2,10 @@
 <html xmins:th="https://www.thymleaf.org" xmlns:xmins="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Add Item</title>
+    <title>Add item to Warehouse</title>
 </head>
 <body>
+<div th:replace="/homepageHeader :: homepageHeader"> </div>
 <div class="add-item-form-container">
     <form action="#" th:action="@{'/items/{itemId}/warehouse/{warehouseId}'(itemId=${itemId}, warehouseId=${warehouseId})}"  th:method="post">
         <label>
@@ -13,9 +14,5 @@
         <button type="submit">Add item to this warehouse</button>
     </form>
 </div>
-
 </body>
 </html>
-
-
-<!--th:action="@{'/items/{itemId}/warehouse/{warehouseId}'(itemId=${item.id}, warehouseId=${warehouse.warehouseId})}"-->

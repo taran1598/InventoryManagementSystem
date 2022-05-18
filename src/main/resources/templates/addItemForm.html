@@ -5,6 +5,7 @@
     <title>Add Item</title>
 </head>
 <body>
+<div th:replace="/homepageHeader :: homepageHeader"> </div>
     <div class="add-item-form-container">
         <form action="#" th:action="@{/item}" th:object="${item}" method="post">
             <div class="label-group">

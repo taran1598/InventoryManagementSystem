@@ -1,5 +1,8 @@
 package com.example.inventorymanagementsystem.warehouseitems;
 
+import com.example.inventorymanagementsystem.exceptions.AddItemToWarehouseException;
+import com.example.inventorymanagementsystem.exceptions.ReduceItemException;
+import com.example.inventorymanagementsystem.exceptions.WarehouseItemsException;
 import com.example.inventorymanagementsystem.item.Item;
 import com.example.inventorymanagementsystem.item.ItemDataService;
 import com.example.inventorymanagementsystem.warehouse.Warehouse;
@@ -34,7 +37,7 @@ public class WarehouseItemsDataService {
     public WarehouseItems getWarehouseItem(WarehouseItemsCompositeKey key) throws Exception {
         return this.warehouseItemsRepository.findById(key)
                 .orElseThrow(
-                        () -> new Exception(
+                        () -> new WarehouseItemsException(
                                 "Cannot find warehouse item with itemId: " + key.getItemId() + "in warehouseId "
                                         + key.getWarehouseId()));
     }
@@ -93,7 +96,7 @@ public class WarehouseItemsDataService {
 
 
         } else {
-            throw new Exception("Cannot add item to warehouse");
+            throw new AddItemToWarehouseException("Cannot add item to warehouse due to invalid quantity: " + quantityToSave);
         }
     }
 
@@ -112,7 +115,7 @@ public class WarehouseItemsDataService {
         Warehouse warehouse = validateWarehouse(warehouseId);
         WarehouseItems warehouseItems = this.getWarehouseItem(warehouseItemsKey);
 
-        if (canDeleteItemFromWarehouse(warehouse, item, warehouseItems, quantityToDelete)) {
+        if (canReduceItemFromWarehouse(warehouse, item, warehouseItems, quantityToDelete)) {
 
             warehouse.setCurrentCapacity(warehouse.getCurrentCapacity() - quantityToDelete);
             item.setQuantityNotInWarehouse(item.getQuantityNotInWarehouse() + quantityToDelete);
@@ -131,7 +134,7 @@ public class WarehouseItemsDataService {
             this.itemDataService.createOrUpdateItem(item);
             this.warehouseDataService.createOrUpdateWarehouse(warehouse);
         } else {
-            throw new Exception("No item could be deleted");
+            throw new ReduceItemException("Invalid quantity to delete. Trying to delete too much or too little with quantity: " + quantityToDelete);
         }
     }
 
@@ -146,9 +149,6 @@ public class WarehouseItemsDataService {
 
     /**
      * Return true if there is enough capacity in the warehouse to store the item and there are enough items remaining not in a warehouse
-     * @param warehouse
-     * @param item
-     * @return
      */
     private boolean canAddItemToWarehouse(Warehouse warehouse, Item item, int quantityToAdd) {
 
@@ -161,7 +161,7 @@ public class WarehouseItemsDataService {
     }
 
 
-    private boolean canDeleteItemFromWarehouse(Warehouse warehouse, Item item, WarehouseItems warehouseItems, int quantityToDelete) {
+    private boolean canReduceItemFromWarehouse(Warehouse warehouse, Item item, WarehouseItems warehouseItems, int quantityToDelete) {
         int warehouseCapacityAfterDelete = warehouse.getCurrentCapacity() - quantityToDelete;
         int itemNewQuantity = item.getQuantityNotInWarehouse() + quantityToDelete;
         int itemsInWarehouseAfterDelete = warehouseItems.getQuantity() - quantityToDelete;

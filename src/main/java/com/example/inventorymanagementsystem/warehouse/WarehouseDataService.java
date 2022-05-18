@@ -1,5 +1,6 @@
 package com.example.inventorymanagementsystem.warehouse;
 
+import com.example.inventorymanagementsystem.exceptions.WarehouseException;
 import com.example.inventorymanagementsystem.item.Item;
 import com.example.inventorymanagementsystem.item.ItemDataService;
 import org.hibernate.Hibernate;
@@ -28,7 +29,7 @@ public class WarehouseDataService {
 
     public Warehouse getWarehouse(long id) throws Exception {
         return this.warehouseRepository.findById(id)
-                .orElseThrow(() -> new Exception("No Warehouse found by id: " + id));
+                .orElseThrow(() -> new WarehouseException("No Warehouse found by id: " + id));
     }
 
     public Warehouse createOrUpdateWarehouse(Warehouse warehouse) {

@@ -1,5 +1,6 @@
 package com.example.inventorymanagementsystem.item;
 
+import com.example.inventorymanagementsystem.exceptions.ItemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +38,7 @@ public class ItemDataService {
 
     public Item getItem(long id) throws Exception {
         return this.itemRepository.findById(id)
-                .orElseThrow(() -> new Exception("No Item found by id: " + id));
+                .orElseThrow(() -> new ItemException("No Item found with id: " + id));
     }
 
     public List<Item> getItems(List<Long> itemId) {

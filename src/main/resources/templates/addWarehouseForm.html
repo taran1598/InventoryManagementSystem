@@ -5,6 +5,7 @@
     <title>Add Warehouse</title>
 </head>
 <body>
+<div th:replace="/homepageHeader :: homepageHeader"> </div>
 <div class="add-item-form-container">
     <form action="#" th:action="@{/warehouse}" th:object="${warehouse}" method="post">
         <div class="label-group">

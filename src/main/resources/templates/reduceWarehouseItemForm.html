@@ -2,9 +2,10 @@
 <html xmins:th="https://www.thymleaf.org" xmlns:xmins="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Add Item</title>
+    <title>Reduce Items</title>
 </head>
 <body>
+<div th:replace="/homepageHeader :: homepageHeader"> </div>
 <div class="add-item-form-container">
     <form action="#" th:action="@{'/reduceItem/{itemId}/warehouse/{warehouseId}'(itemId=${itemId}, warehouseId=${warehouseId})}"  th:method="post">
         <label>

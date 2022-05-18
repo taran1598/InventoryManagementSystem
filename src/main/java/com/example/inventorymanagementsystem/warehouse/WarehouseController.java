@@ -1,13 +1,13 @@
 package com.example.inventorymanagementsystem.warehouse;
 
 import com.example.inventorymanagementsystem.item.Item;
+import com.example.inventorymanagementsystem.thymeleafAttributes.ThymeleafAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @CrossOrigin
 @Controller
@@ -27,8 +27,14 @@ public class WarehouseController {
     }
 
     @GetMapping("/warehouses/{id}")
-    public Warehouse getWarehouseById(@PathVariable long id) throws Exception {
-        return this.warehouseDataService.getWarehouse(id);
+    public String getWarehouseById(@PathVariable long id, Model model) {
+        try {
+            model.addAttribute("warehouse", this.warehouseDataService.getWarehouse(id));
+            return "";
+        } catch (Exception e) {
+            model.addAttribute(ThymeleafAttributes.error.toString(), e.getMessage());
+            return "errorPage";
+        }
     }
 
     @PostMapping("/warehouse")
@@ -65,10 +71,15 @@ public class WarehouseController {
     }
 
     @GetMapping("/editWarehousePage/{id}")
-    public String goToEditItemsPage(@PathVariable long id, Model model) throws Exception {
-        Warehouse warehouse = this.warehouseDataService.getWarehouse(id);
-        model.addAttribute("warehouse", warehouse);
-        return "addWarehouseForm";
+    public String goToEditItemsPage(@PathVariable long id, Model model) {
+        try {
+            Warehouse warehouse = this.warehouseDataService.getWarehouse(id);
+            model.addAttribute("warehouse", warehouse);
+            return "addWarehouseForm";
+        } catch (Exception e) {
+            model.addAttribute(ThymeleafAttributes.error.toString(), e.getMessage());
+            return "errorPage";
+        }
     }
 
 
