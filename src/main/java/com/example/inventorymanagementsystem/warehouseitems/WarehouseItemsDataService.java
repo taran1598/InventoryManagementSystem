@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class WarehouseItemsDataService {
@@ -28,6 +29,29 @@ public class WarehouseItemsDataService {
 
     public List<WarehouseItems> getAllWarehouseItems() {
         return this.warehouseItemsRepository.findAll();
+    }
+
+    public WarehouseItems getWarehouseItem(WarehouseItemsCompositeKey key) throws Exception {
+        return this.warehouseItemsRepository.findById(key)
+                .orElseThrow(
+                        () -> new Exception(
+                                "Cannot find warehouse item with itemId: " + key.getItemId() + "in warehouseId "
+                                        + key.getWarehouseId()));
+    }
+
+    public void deleteWarehouseItem(WarehouseItemsCompositeKey key) {
+        this.warehouseItemsRepository.deleteById(key);
+    }
+
+    public List<WarehouseItems> findItemsInWarehouse(long warehouseId) {
+        return this.warehouseItemsRepository.findAllByWarehouseId(warehouseId);
+    }
+
+    public List<Item> getItemsInWarehouse(List<WarehouseItems> warehouseItemsList) {
+        List<Long> itemsInWarehouse = warehouseItemsList.stream()
+                .map((WarehouseItems::getItemId)).collect(Collectors.toList());
+
+        return this.itemDataService.getItems(itemsInWarehouse);
     }
 
     /**
@@ -52,6 +76,8 @@ public class WarehouseItemsDataService {
             int newItemQuantity = warehouseItems.getQuantity() + quantityToSave;
             warehouseItems.setQuantity(newItemQuantity);
 
+            itemToSave.setQuantityNotInWarehouse(itemToSave.getQuantityNotInWarehouse() - quantityToSave);
+
             // update the capacity of the warehouse
             warehouse.setCurrentCapacity(warehouse.getCurrentCapacity() + quantityToSave);
 
@@ -71,6 +97,44 @@ public class WarehouseItemsDataService {
         }
     }
 
+    /**
+     * Deletes quantityTODelete items with itemId from the warehouse with warehouseId. itemId and warehouseId will always
+     * be unique. If no warehouse/item with warehouseId/itemId is found then nothing will be deleted
+     * @param itemId: Id of the item to delete. This is the pk of the item
+     * @param warehouseId: Id of the warehouse to delete the item from. This is the pk of the warehouse
+     * @param quantityToDelete: Amount to delete from the warehouse. The warehouse must have at least this many items otherwise no deletion will happen
+     * @return: WarehouseItems after deletion
+     */
+    @Transactional
+    public void reduceItemFromWarehouse(long itemId, long warehouseId, int quantityToDelete) throws Exception {
+        WarehouseItemsCompositeKey warehouseItemsKey = new WarehouseItemsCompositeKey(itemId, warehouseId);
+        Item item = validateItem(itemId);
+        Warehouse warehouse = validateWarehouse(warehouseId);
+        WarehouseItems warehouseItems = this.getWarehouseItem(warehouseItemsKey);
+
+        if (canDeleteItemFromWarehouse(warehouse, item, warehouseItems, quantityToDelete)) {
+
+            warehouse.setCurrentCapacity(warehouse.getCurrentCapacity() - quantityToDelete);
+            item.setQuantityNotInWarehouse(item.getQuantityNotInWarehouse() + quantityToDelete);
+
+            // update warehouseItems. If we have 0 of itemId in warehouseId then we delete the entry from the warehouse
+            warehouseItems.setQuantity(warehouseItems.getQuantity() - quantityToDelete);
+
+            // delete the item if quantity of item in warehouse is 0
+            if (warehouseItems.getQuantity() == 0) {
+                this.deleteWarehouseItem(warehouseItemsKey);
+            } else {
+                this.warehouseItemsRepository.save(warehouseItems);
+            }
+
+            // save entities to db
+            this.itemDataService.createOrUpdateItem(item);
+            this.warehouseDataService.createOrUpdateWarehouse(warehouse);
+        } else {
+            throw new Exception("No item could be deleted");
+        }
+    }
+
     private Item validateItem(long itemId) throws Exception {
         return itemDataService.getItem(itemId);
     }
@@ -78,6 +142,7 @@ public class WarehouseItemsDataService {
     private Warehouse validateWarehouse(long warehouseId) throws Exception {
         return warehouseDataService.getWarehouse(warehouseId);
     }
+
 
     /**
      * Return true if there is enough capacity in the warehouse to store the item and there are enough items remaining not in a warehouse
@@ -90,9 +155,18 @@ public class WarehouseItemsDataService {
         int warehouseCapacityAfterAdd = warehouse.getCurrentCapacity() + quantityToAdd;
         int remainingItemQuantityAfterAdd = item.getQuantityNotInWarehouse() - quantityToAdd;
 
-        return warehouseCapacityAfterAdd <= warehouse.getMaxCapacity() && remainingItemQuantityAfterAdd >= 0;
+        return warehouseCapacityAfterAdd <= warehouse.getMaxCapacity() &&
+                remainingItemQuantityAfterAdd >= 0 &&
+                quantityToAdd >= 0;
+    }
 
 
+    private boolean canDeleteItemFromWarehouse(Warehouse warehouse, Item item, WarehouseItems warehouseItems, int quantityToDelete) {
+        int warehouseCapacityAfterDelete = warehouse.getCurrentCapacity() - quantityToDelete;
+        int itemNewQuantity = item.getQuantityNotInWarehouse() + quantityToDelete;
+        int itemsInWarehouseAfterDelete = warehouseItems.getQuantity() - quantityToDelete;
+
+        return warehouseCapacityAfterDelete >= 0 && itemNewQuantity <= item.getTotalQuantity() && itemsInWarehouseAfterDelete >= 0;
     }
 
 

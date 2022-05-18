@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html xmins:th="https://www.thymleaf.org" xmlns:xmins="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Items in warehouse</title>
+</head>
+<body>
+<h2 th:text="${'Items in warehouse ' + warehouse.warehouseName}"></h2>
+
+<div class="items-container" style="text-align:center" >
+    <table class="items-table">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>Name</th>
+            <th>Quantity in Warehouse</th>
+            <th>Created On</th>
+            <th></th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${items}">
+            <td th:text="${item.id}"></td>
+            <td th:text="${item.displayName}"></td>
+            <td th:text="${warehouseItemsMap.getOrDefault(item.id, 0)}"></td>
+            <td th:text="${item.createdTimeStamp}"></td>
+            <td>
+                <a th:href="@{/reduceItemsForm/{itemId}/{warehouseId}(itemId=${item.id}, warehouseId=${warehouse.warehouseId})}">Reduce items</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+
+

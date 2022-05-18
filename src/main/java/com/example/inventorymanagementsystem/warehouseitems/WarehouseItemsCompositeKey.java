@@ -28,4 +28,12 @@ public class WarehouseItemsCompositeKey implements Serializable {
     public int hashCode() {
         return Objects.hash(itemId, warehouseId);
     }
+
+    public long getItemId() {
+        return itemId;
+    }
+
+    public long getWarehouseId() {
+        return warehouseId;
+    }
 }

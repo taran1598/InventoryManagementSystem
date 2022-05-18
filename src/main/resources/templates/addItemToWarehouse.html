@@ -31,11 +31,7 @@
             <td th:text="${warehouse.currentCapacity}"></td>
             <td th:text="${warehouse.address}"></td>
             <td>
-                <a th:href="@{/goToWarehouseQuantityForm/{itemId}/{warehouseId}(itemId=${item.id}, warehouseId=${warehouse.warehouseId})}">Add item to this warehouse</a>
-                <!--                <form action="#" th:action="@{'/items/{itemId}/warehouse/{warehouseId}'(itemId=${item.id}, warehouseId=${warehouse.warehouseId})}" th:method="post">-->
-                <!--                    <input type="hidden" name="_method" value="delete" />-->
-                <!--                    <button type="submit">Add item to this warehouse</button>-->
-                <!--                </form>-->
+                <a th:href="@{/quantityToAdd/{itemId}/{warehouseId}(itemId=${item.id}, warehouseId=${warehouse.warehouseId})}">Choose</a>
             </td>
         </tr>
         </tbody>

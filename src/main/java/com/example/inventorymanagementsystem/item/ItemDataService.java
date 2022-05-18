@@ -40,6 +40,10 @@ public class ItemDataService {
                 .orElseThrow(() -> new Exception("No Item found by id: " + id));
     }
 
+    public List<Item> getItems(List<Long> itemId) {
+        return this.itemRepository.findAllById(itemId);
+    }
+
     public void deleteItem(Item item) {
         this.itemRepository.delete(item);
     }

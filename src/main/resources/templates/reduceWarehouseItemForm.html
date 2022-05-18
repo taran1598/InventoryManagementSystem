@@ -6,11 +6,11 @@
 </head>
 <body>
 <div class="add-item-form-container">
-    <form action="#" th:action="@{'/items/{itemId}/warehouse/{warehouseId}'(itemId=${itemId}, warehouseId=${warehouseId})}"  th:method="post">
+    <form action="#" th:action="@{'/reduceItem/{itemId}/warehouse/{warehouseId}'(itemId=${itemId}, warehouseId=${warehouseId})}"  th:method="post">
         <label>
-            <input type="number" th:name="quantity" placeholder="Enter quantity of item to add" required>
+            <input type="number" th:name="quantityToReduce" placeholder="Enter quantity of item to remove from warehouse" required>
         </label>
-        <button type="submit">Add item to this warehouse</button>
+        <button type="submit">Remove</button>
     </form>
 </div>
 

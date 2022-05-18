@@ -18,6 +18,7 @@
                     <th>id</th>
                     <th>Name</th>
                     <th>Total Quantity</th>
+                    <th>Quantity Not in Warehouse</th>
                     <th>Created On</th>
                     <th></th>
                     <th></th>
@@ -29,6 +30,7 @@
                     <td th:text="${item.id}"></td>
                     <td th:text="${item.displayName}"></td>
                     <td th:text="${item.totalQuantity}"></td>
+                    <td th:text="${item.quantityNotInWarehouse}"></td>
                     <td th:text="${item.createdTimeStamp}"></td>
                     <td>
                         <a th:href="@{/editItemsPage/{id}(id=${item.id})}">Edit</a>

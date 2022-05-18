@@ -81,7 +81,7 @@ public class ItemController {
         return "addItemToWarehouse";
     }
 
-    @GetMapping("/goToWarehouseQuantityForm/{itemId}/{warehouseId}")
+    @GetMapping("/quantityToAdd/{itemId}/{warehouseId}")
     public String goToAddItemTOwarehousePage(@PathVariable long itemId, @PathVariable long warehouseId, Model model) throws Exception {
         model.addAttribute("itemId", itemId);
         model.addAttribute("warehouseId", warehouseId);

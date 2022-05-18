@@ -21,6 +21,7 @@
             <th>Address</th>
             <th></th>
             <th></th>
+            <th></th>
 
         </tr>
         </thead>
@@ -31,6 +32,9 @@
             <td th:text="${warehouse.maxCapacity}"></td>
             <td th:text="${warehouse.currentCapacity}"></td>
             <td th:text="${warehouse.address}"></td>
+            <td>
+                <a th:href="@{/itemsInWarehousePage/{id}(id=${warehouse.warehouseId})}">Show items in warehouse</a>
+            </td>
             <td>
                 <a th:href="@{/editWarehousePage/{id}(id=${warehouse.warehouseId})}">Edit</a>
             </td>

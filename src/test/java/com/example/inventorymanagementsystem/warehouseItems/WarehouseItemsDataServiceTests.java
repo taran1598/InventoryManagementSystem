@@ -8,6 +8,7 @@ import com.example.inventorymanagementsystem.item.ItemDataService;
 import com.example.inventorymanagementsystem.warehouse.Warehouse;
 import com.example.inventorymanagementsystem.warehouse.WarehouseDataService;
 import com.example.inventorymanagementsystem.warehouseitems.WarehouseItems;
+import com.example.inventorymanagementsystem.warehouseitems.WarehouseItemsCompositeKey;
 import com.example.inventorymanagementsystem.warehouseitems.WarehouseItemsController;
 import com.example.inventorymanagementsystem.warehouseitems.WarehouseItemsDataService;
 import org.junit.jupiter.api.Test;
@@ -53,8 +54,70 @@ public class WarehouseItemsDataServiceTests {
         } catch (Exception e) {
             fail(e.getMessage());
         }
+    }
+
+    @Test
+    public void reduceItemFromWarehouseShouldHaveCapacityAtOneTest() {
+        Item item = itemDataService.createOrUpdateItem(new Item("testItem", 20));
+        Warehouse warehouse = warehouseDataService.createOrUpdateWarehouse(new Warehouse("testWarehouse", 20, "testAddress"));
+        WarehouseItemsCompositeKey key = new WarehouseItemsCompositeKey(item.getId(), warehouse.getWarehouseId());
+        int quantityOfItemToAddToWarehouse = 19;
+        int quantityOfItemToReduce = 18;
+
+        try {
+
+            WarehouseItems savedWarehouseItems = warehouseItemsDataService.saveTimeToWarehouse(
+                    item.getId(),
+                    warehouse.getWarehouseId(),
+                    quantityOfItemToAddToWarehouse
+            );
+            assertThat(savedWarehouseItems.getWarehouseId()).isEqualTo(warehouse.getWarehouseId());
+            assertThat(savedWarehouseItems.getItemId()).isEqualTo(item.getId());
+            assertThat(savedWarehouseItems.getQuantity()).isEqualTo(quantityOfItemToAddToWarehouse);
+
+            // remove 18 quantity from warehouse
+            warehouseItemsDataService.reduceItemFromWarehouse(item.getId(), warehouse.getWarehouseId(), quantityOfItemToReduce);
+            WarehouseItems warehouseItemsAfterReduce = warehouseItemsDataService.getWarehouseItem(key);
+
+            assertThat(warehouseItemsAfterReduce.getQuantity()).isEqualTo(1);
+
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void reduceItemFromWarehouseShouldDeleteItemTest() {
+        Item item = itemDataService.createOrUpdateItem(new Item("testItem", 20));
+        Warehouse warehouse = warehouseDataService.createOrUpdateWarehouse(new Warehouse("testWarehouse", 20, "testAddress"));
+        WarehouseItemsCompositeKey key = new WarehouseItemsCompositeKey(item.getId(), warehouse.getWarehouseId());
+        int quantityOfItemToAddToWarehouse = 19;
+        int quantityOfItemToReduce = 19;
+
+        try {
+
+            WarehouseItems savedWarehouseItems = warehouseItemsDataService.saveTimeToWarehouse(
+                    item.getId(),
+                    warehouse.getWarehouseId(),
+                    quantityOfItemToAddToWarehouse
+            );
+            assertThat(savedWarehouseItems.getWarehouseId()).isEqualTo(warehouse.getWarehouseId());
+            assertThat(savedWarehouseItems.getItemId()).isEqualTo(item.getId());
+            assertThat(savedWarehouseItems.getQuantity()).isEqualTo(quantityOfItemToAddToWarehouse);
+
+            // remove 18 quantity from warehouse
+            warehouseItemsDataService.reduceItemFromWarehouse(item.getId(), warehouse.getWarehouseId(), quantityOfItemToReduce);
+            try {
+                WarehouseItems warehouseItemsAfterReduce = warehouseItemsDataService.getWarehouseItem(key);
+                fail("The item should have been deleted from warehouse");
+            } catch (Exception e) {
+                // should pass
+            }
 
 
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
 
     }
 }

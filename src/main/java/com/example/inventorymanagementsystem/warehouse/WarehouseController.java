@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin
 @Controller
@@ -36,12 +37,6 @@ public class WarehouseController {
         return "redirect:/warehouses";
     }
 
-//    @PostMapping("/item")
-//    public String saveItem(Item item) {
-//        this.itemService.createOrUpdateItem(item);
-//
-//        return "redirect:/items";
-//    }
 
     @PostMapping("/warehouses")
     public List<Warehouse> createOrUpdateWarehouse(@RequestBody List<Warehouse> warehouses) {
@@ -59,10 +54,6 @@ public class WarehouseController {
         this.warehouseDataService.deleteAllWarehouses();
     }
 
-//    @PostMapping("/warehouses/addItem/{itemId}/warehouse/{warehouseId}")
-//    public Warehouse addItemToWarehouse(@PathVariable long itemId, @PathVariable long warehouseId) throws Exception {
-//        return this.warehouseDataService.addItemToWarehouse(itemId, warehouseId);
-//    }
 
     // redirect endpoints
 
@@ -80,10 +71,6 @@ public class WarehouseController {
         return "addWarehouseForm";
     }
 
-//    @GetMapping("/showWarehouseItemsPage/{id}")
-//    public String goToShowWarehouseItemsPage(@PathVariable long id, Model model) throws Exception {
-//        Warehouse warehouse = this.warehouseDataService.getWarehouse(id);
-//    }
 
 
 }
