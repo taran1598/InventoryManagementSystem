@@ -1,6 +1,6 @@
 # InventoryManagementSystem
 
-**To run in REPL**
+### **To run in REPL**
 - Create a REPL and choose import from github option
 - Choose this repository
 - REPL will create a new REPL
@@ -8,9 +8,16 @@
   - If REPL did not ask for a run configuration, in console at the bottom enter **"./gradlew bootRun"**.
   **Thats all the steps to run the application in REPL**.
   
-**Problems with running it**
+### **Problems with running it**
 - One problem with running "./gradlew" in REPL is that the permission may not be set. I have set the permission for this repo but just in case you get the error
 **gradlew permission denied** , enter this command in the terminal where you ran **"./gradlew bootRun"**. Command: **chmod +x gradlew**. From the post https://stackoverflow.com/questions/17668265/gradlew-permission-denied .
+
+### To use the web application
+- Click the button on the top right after running the web application that will open a new window. **Important** not to use the smaller window because the smaller window has a bug where it does not support redirection. 
+- In the picture the icon on the top right that is circled in blue will pop up a new browser.
+- ![image](https://user-images.githubusercontent.com/38511558/169719569-a275b0de-b46f-4ca7-af46-0471f5c1849f.png)
+
+
 
 ### Workflows
 - Mainpage has two options - Items and Warehouses
