@@ -4,7 +4,7 @@
 - Create a REPL and choose import from github option
 - Choose this repository
 - REPL will create a new REPL
-- In my versoin REPL asked for a run configuration. For running the project using the RUN button repl provides enter **"./gradlew bootRun"** .
+- In my versoin REPL asked for a run configuration. For running the project using the RUN button repl provides enter **"./gradlew bootRun"** and select the language **Bash**.
   - If REPL did not ask for a run configuration, in console at the bottom enter **"./gradlew bootRun"**.
   **Thats all the steps to run the application in REPL**.
   
