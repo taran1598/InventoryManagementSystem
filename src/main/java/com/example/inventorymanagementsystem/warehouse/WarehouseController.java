@@ -2,6 +2,7 @@ package com.example.inventorymanagementsystem.warehouse;
 
 import com.example.inventorymanagementsystem.item.Item;
 import com.example.inventorymanagementsystem.thymeleafAttributes.ThymeleafAttributes;
+import com.example.inventorymanagementsystem.warehouseitems.WarehouseItemsDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,9 +15,12 @@ import java.util.List;
 public class WarehouseController {
 
     private final WarehouseDataService warehouseDataService;
+    private final WarehouseItemsDataService warehouseItemsDataService;
 
-    public WarehouseController(@Autowired WarehouseDataService warehouseDataService) {
+    public WarehouseController(@Autowired WarehouseDataService warehouseDataService,
+                               @Autowired WarehouseItemsDataService warehouseItemsDataService) {
         this.warehouseDataService = warehouseDataService;
+        this.warehouseItemsDataService = warehouseItemsDataService;
     }
 
 
@@ -50,9 +54,14 @@ public class WarehouseController {
     }
 
     @DeleteMapping("/warehouses/{id}")
-    public String deleteWarehouse(@PathVariable long id) {
-        this.warehouseDataService.deleteWarehouse(id);
-        return "redirect:/warehouses";
+    public String deleteWarehouse(@PathVariable long id, Model model) {
+        try {
+            this.warehouseItemsDataService.deleteWarehouse(id);
+            return "redirect:/warehouses";
+        } catch (Exception e) {
+            model.addAttribute(ThymeleafAttributes.error.toString(), e.getMessage());
+            return "errorPage";
+        }
     }
 
     @DeleteMapping("/warehouses")

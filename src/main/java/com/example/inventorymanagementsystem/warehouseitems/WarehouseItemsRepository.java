@@ -7,4 +7,5 @@ import java.util.List;
 public interface WarehouseItemsRepository extends JpaRepository<WarehouseItems, WarehouseItemsCompositeKey>  {
 
     List<WarehouseItems> findAllByWarehouseId(long warehouseId);
+    List<WarehouseItems> findAllByItemId(long itemId);
 }

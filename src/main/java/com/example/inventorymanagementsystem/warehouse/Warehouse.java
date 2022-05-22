@@ -35,10 +35,10 @@ public class Warehouse {
     @Column(name = "address", nullable = false)
     private String address;
 
-    @ManyToMany(fetch = FetchType.LAZY ,mappedBy = "warehouse", targetEntity = Item.class, cascade = CascadeType.ALL)
-    @Column(name = "items", nullable = true)
-    @ToString.Exclude
-    private Set<Item> items = new HashSet<>();
+//    @ManyToMany(fetch = FetchType.LAZY ,mappedBy = "warehouse", targetEntity = Item.class, cascade = CascadeType.ALL)
+//    @Column(name = "items", nullable = true)
+//    @ToString.Exclude
+//    private Set<Item> items = new HashSet<>();
 
     public Warehouse(String warehouseName, int maxCapacity, String address) {
         this.warehouseName = warehouseName;
@@ -46,9 +46,9 @@ public class Warehouse {
         this.address = address;
     }
 
-    public void addItem(Item item) {
-        this.getItems().add(item);
-    }
+//    public void addItem(Item item) {
+//        this.getItems().add(item);
+//    }
 
     @Override
     public boolean equals(Object o) {

@@ -2,6 +2,7 @@ package com.example.inventorymanagementsystem.item;
 
 import com.example.inventorymanagementsystem.thymeleafAttributes.ThymeleafAttributes;
 import com.example.inventorymanagementsystem.warehouse.WarehouseDataService;
+import com.example.inventorymanagementsystem.warehouseitems.WarehouseItemsDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,11 +15,14 @@ public class ItemController {
 
     private final ItemDataService itemService;
     private final WarehouseDataService warehouseDataService;
+    private final WarehouseItemsDataService warehouseItemsDataService;
 
     public ItemController(@Autowired ItemDataService itemService,
-                          @Autowired WarehouseDataService warehouseDataService) {
+                          @Autowired WarehouseDataService warehouseDataService,
+                          @Autowired WarehouseItemsDataService warehouseItemsDataService) {
         this.itemService = itemService;
         this.warehouseDataService = warehouseDataService;
+        this.warehouseItemsDataService = warehouseItemsDataService;
     }
 
     @GetMapping("/items")
@@ -28,9 +32,15 @@ public class ItemController {
     }
 
     @PostMapping("/item")
-    public String saveItem(Item item) {
-        this.itemService.createOrUpdateItem(item);
-        return "redirect:/items";
+    public String saveItem(Item item, int oldTotalQuantity, Model model) {
+        try {
+            // update item not in warehouse
+            this.itemService.createOrUpdateItem(item, oldTotalQuantity);
+            return "redirect:/items";
+        } catch (Exception e) {
+            model.addAttribute(ThymeleafAttributes.error.toString(), e.getMessage());
+            return "errorPage";
+        }
     }
 
     @DeleteMapping("/items")
@@ -39,9 +49,14 @@ public class ItemController {
     }
 
     @DeleteMapping("/items/{id}")
-    public String deleteItem(@PathVariable long id) {
-        this.itemService.deleteItem(id);
-        return "redirect:/items";
+    public String deleteItem(@PathVariable long id, Model model) {
+        try {
+            this.warehouseItemsDataService.deleteItem(id);
+            return "redirect:/items";
+        } catch (Exception e) {
+            model.addAttribute(ThymeleafAttributes.error.toString(), e.getMessage());
+            return "errorPage";
+        }
     }
 
 

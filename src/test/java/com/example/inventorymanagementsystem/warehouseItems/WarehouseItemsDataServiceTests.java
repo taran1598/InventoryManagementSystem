@@ -29,18 +29,16 @@ public class WarehouseItemsDataServiceTests {
     @Autowired
     private WarehouseDataService warehouseDataService;
 
-    @Test
-    public void controllerLoads() {
-        assertThat(warehouseItemsDataService).isNotNull();
-    }
 
     @Test
     public void addItemToWarehouseTest() {
-        Item item = itemDataService.createOrUpdateItem(new Item("testItem", 20));
+        try {
+        int totalQuantity = 20;
+        Item item = itemDataService.createOrUpdateItem(new Item("testItem", totalQuantity), totalQuantity);
         Warehouse warehouse = warehouseDataService.createOrUpdateWarehouse(new Warehouse("testWarehouse", 20, "testAddress"));
         int quantityOfItemToAddToWarehouse = 19;
 
-        try {
+
 
             WarehouseItems savedWarehouseItems = warehouseItemsDataService.saveTimeToWarehouse(
                     item.getId(),
@@ -58,13 +56,13 @@ public class WarehouseItemsDataServiceTests {
 
     @Test
     public void reduceItemFromWarehouseShouldHaveCapacityAtOneTest() {
-        Item item = itemDataService.createOrUpdateItem(new Item("testItem", 20));
+        try {
+        int totalQuantity = 20;
+        Item item = itemDataService.createOrUpdateItem(new Item("testItem", totalQuantity), totalQuantity);
         Warehouse warehouse = warehouseDataService.createOrUpdateWarehouse(new Warehouse("testWarehouse", 20, "testAddress"));
         WarehouseItemsCompositeKey key = new WarehouseItemsCompositeKey(item.getId(), warehouse.getWarehouseId());
         int quantityOfItemToAddToWarehouse = 19;
         int quantityOfItemToReduce = 18;
-
-        try {
 
             WarehouseItems savedWarehouseItems = warehouseItemsDataService.saveTimeToWarehouse(
                     item.getId(),
@@ -88,13 +86,14 @@ public class WarehouseItemsDataServiceTests {
 
     @Test
     public void reduceItemFromWarehouseShouldDeleteItemTest() {
-        Item item = itemDataService.createOrUpdateItem(new Item("testItem", 20));
+        try {
+        int totalQuantity = 20;
+        Item item = itemDataService.createOrUpdateItem(new Item("testItem", totalQuantity), totalQuantity);
         Warehouse warehouse = warehouseDataService.createOrUpdateWarehouse(new Warehouse("testWarehouse", 20, "testAddress"));
         WarehouseItemsCompositeKey key = new WarehouseItemsCompositeKey(item.getId(), warehouse.getWarehouseId());
         int quantityOfItemToAddToWarehouse = 19;
         int quantityOfItemToReduce = 19;
 
-        try {
 
             WarehouseItems savedWarehouseItems = warehouseItemsDataService.saveTimeToWarehouse(
                     item.getId(),

@@ -41,26 +41,15 @@ public class Item {
     @Column(name = "createdTimeStamp", nullable = false)
     private Instant createdTimeStamp;
 
-    @JsonIgnore
-    @ManyToMany
-    @JoinColumn(name = "warehouse_fk", referencedColumnName = "warehouse_id", nullable = true)
-    @ToString.Exclude
-    private Set<Warehouse> warehouse = new HashSet<>();
-
-
-
     public Item(String displayName, int totalQuantity) {
         this.displayName = displayName;
         this.totalQuantity = totalQuantity;
         this.quantityNotInWarehouse = totalQuantity;
     }
 
-    public void addWarehouse(Warehouse warehouse) {
-        this.getWarehouse().add(warehouse);
-    }
-
     @PrePersist
-    private void setquantityNotInWarehouse() {
+    private void setQuantityNotInWarehouse() {
+
         this.quantityNotInWarehouse = totalQuantity;
     }
 

@@ -15,19 +15,17 @@ public class WarehouseDataService {
 
 
     private final WarehouseRepository warehouseRepository;
-    private final ItemDataService itemDataService;
 
-    public WarehouseDataService(@Autowired WarehouseRepository warehouseRepository,
-                                @Autowired ItemDataService itemDataService) {
+    public WarehouseDataService(@Autowired WarehouseRepository warehouseRepository) {
         this.warehouseRepository = warehouseRepository;
-        this.itemDataService = itemDataService;
+
     }
 
     public List<Warehouse> getAllWarehouses() {
         return this.warehouseRepository.findAll();
     }
 
-    public Warehouse getWarehouse(long id) throws Exception {
+    public Warehouse getWarehouse(long id) throws WarehouseException {
         return this.warehouseRepository.findById(id)
                 .orElseThrow(() -> new WarehouseException("No Warehouse found by id: " + id));
     }
@@ -40,12 +38,12 @@ public class WarehouseDataService {
         return this.warehouseRepository.saveAll(warehouses);
     }
 
-    public void deleteWarehouse(Warehouse warehouse) {
-        this.warehouseRepository.delete(warehouse);
-    }
-
-    public void deleteWarehouse(long id) {
-        this.warehouseRepository.deleteById(id);
+    public void deleteWarehouse(long id) throws WarehouseException {
+        try {
+            this.warehouseRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new WarehouseException(e.getMessage());
+        }
     }
 
     public void deleteAllWarehouses() {

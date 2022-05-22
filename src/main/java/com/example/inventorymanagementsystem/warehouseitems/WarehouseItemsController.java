@@ -57,7 +57,7 @@ public class WarehouseItemsController {
 
         try {
             Warehouse warehouse = this.warehouseDataService.getWarehouse(id);
-            List<WarehouseItems> warehouseItemsList = this.warehouseItemsDataService.findItemsInWarehouse(id);
+            List<WarehouseItems> warehouseItemsList = this.warehouseItemsDataService.findAllWarehouses(id);
 
             List<Item> items = this.warehouseItemsDataService.getItemsInWarehouse(warehouseItemsList);
 
